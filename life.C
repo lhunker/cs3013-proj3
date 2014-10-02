@@ -45,10 +45,13 @@ void * worker(void* arg){
 	for (int i = 1; i <= totalgen; i++){
 		//Wait for go message
 		int t;
-		do{
-			box->RecvMsg(myid, &myRange);
-			t = myRange.type;
-		}while (t != GO);
+		box->RecvMsg(myid, &myRange);
+		t = myRange.type;
+		if (t == STOP){
+			break;
+		}
+
+		int same = 1, empty = 1;
 
 		//Process Generation
 		for (int j = start; j < end; j++){
@@ -60,23 +63,35 @@ void * worker(void* arg){
 				else if ( n < 2 || n > 3)
 					newval = 0;
 
-				if (i%2){	//odd generation
+				if (i%2 == 1){	//odd generation
 					if (newval == -1)
 						odd[j][k] = even[j][k];
 					else
 						odd[j][k] = newval;
+					if (odd[j][k] != 0){
+						empty = 0;
+					}
 				} else {	//even generation
 					if (newval == -1)
 						even[j][k] = odd[j][k];
 					else
 						even[j][k] = newval;
+					if (even[j][k] != 0){
+						empty = 0;
+					}
 				}
+				if (odd[j][k] != even[j][k])
+					same = 0;
 			}
 		}
+
+
 
 		//Send genDone
 		struct msg *send = new struct msg;
 		send->iFrom = myid;
+		send->value1 = empty;
+		send->value2 = same;
 		send->type = GENDONE;
 		box->SendMsg(0, send);
 
@@ -232,21 +247,37 @@ int main (int argc, char** argv){
 			send->type = GO;
 			box->SendMsg(j+1, send);
 		}
-
+		
+		int same = 1, empty = 1;
 		for(int j = 0; j < thread; j++){
 			struct msg recv;
 			int t;
-			do{
-				box->RecvMsg(0, &recv);
-				t = recv.type;
-				if (t == ALLDONE){
-					donecount++;
-				}
+			box->RecvMsg(0, &recv);
+			t = recv.type;
+			if (t == ALLDONE){
+				donecount++;
+			}
+			if (recv.value1 == 0){
+				empty = 0;
+			}
+			if (recv.value2 == 0)
+				same = 0;
 
-			} while (t != GENDONE);
 		}
 		lastgen = i;
+		if (same == 1 || empty == 1){
+			//Send stop message
+			for(int j = 0; j < thread; j++){
+				struct msg * send = new msg;
+				send->iFrom = 0;
+				send->type = STOP;
+				box->SendMsg(j+1, send);
+			}
+			break;
+		}
+		
 	}
+	cout << lastgen << endl;
 
 	//recieve alldone message
 	int sum = 0;
@@ -267,7 +298,7 @@ int main (int argc, char** argv){
 
 	//print final grid
 	cout << "The game ended after " << lastgen << " generations with\n";
-	printgrid(totalgen % 2);
+	printgrid(lastgen % 2);
 
 	return 0;
 }

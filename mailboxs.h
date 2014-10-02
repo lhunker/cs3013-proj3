@@ -2,6 +2,7 @@
 #define ALLDONE 2
 #define GO 3
 #define GENDONE 4
+#define STOP 5
 #include <semaphore.h>
 
 struct msg
