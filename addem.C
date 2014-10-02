@@ -8,17 +8,18 @@ mailboxs * box;
 void *worker(void* arg){
 	int myNum = (int) arg;
 	struct msg myRange;
-	box->RecvMsg(myNum, myRange);
+	box->RecvMsg(myNum, &myRange);
 	int start = myRange.value1;
 	int end = myRange.value2;
 	int sum = 0;
 	for(int i = start; i < end; i++){
 		sum += i;
 	}
-	myRange.iFrom = myNum;
-	myRange.type = ALLDONE;
-	myRange.value1 = sum;
-	box->SendMsg(0, myRange);
+	struct msg * send = new struct msg;
+	send->iFrom = myNum;
+	send->type = ALLDONE;
+	send->value1 = sum;
+	box->SendMsg(0, send);
 }
 
 int main (int argc, char ** argv){
@@ -63,12 +64,12 @@ int main (int argc, char ** argv){
 			cerr << "error creating thread\n";
 			return 1;
 		}
-		struct msg * send = new msg;
+		struct msg * send = new struct msg;
 		send->iFrom = 0;
 		send->type = RANGE;
 		send->value1 = start;
 		send->value2 = end;
-		box->SendMsg(i+1, *send);
+		box->SendMsg(i+1, send);
 
 		next = end;
 	}
@@ -77,7 +78,7 @@ int main (int argc, char ** argv){
 	int sum = 0;
 	for(int i = 0; i < thread; i++){
 		struct msg recv;
-		box->RecvMsg(0, recv);
+		box->RecvMsg(0, &recv);
 		sum += recv.value1;
 	}
 

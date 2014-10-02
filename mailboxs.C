@@ -3,7 +3,7 @@
 
 	//constructor
 mailboxs::mailboxs(int n){
-	boxs = new struct msg [n];
+	boxs = new struct msg * [n];
 	//initialize semaphores
 	sendsem = new sem_t [n];
 	recvsem = new sem_t [n];
@@ -14,15 +14,16 @@ mailboxs::mailboxs(int n){
 	size = n;
 }
 
-void mailboxs::SendMsg(int iTo, struct msg &Msg){
+void mailboxs::SendMsg(int iTo, struct msg *Msg){
 	sem_wait(&sendsem[iTo]);
 	boxs[iTo] = Msg;
 	sem_post(&recvsem[iTo]);
 }
 
-void mailboxs::RecvMsg(int iFrom, struct msg &msg){
+void mailboxs::RecvMsg(int iFrom, struct msg *msg){
 	sem_wait(&recvsem[iFrom]);
-	msg = boxs[iFrom];
+	*msg = *boxs[iFrom];
+	delete boxs[iFrom];
 	sem_post(&sendsem[iFrom]);
 }
 

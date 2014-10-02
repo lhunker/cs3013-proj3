@@ -1,5 +1,7 @@
 #define RANGE 1
 #define ALLDONE 2
+#define GO 3
+#define GENDONE 4
 #include <semaphore.h>
 
 struct msg
@@ -16,12 +18,12 @@ class mailboxs
 public:
 	mailboxs(int n);
 	~mailboxs();
-	void SendMsg(int iTo, struct msg &Msg);
-	void RecvMsg(int iFrom, struct msg &msg);
+	void SendMsg(int iTo, struct msg *Msg);
+	void RecvMsg(int iFrom, struct msg *msg);
 
 private:
 	int size; 	//the number of mailboxs being stored
-	struct msg * boxs;
+	struct msg ** boxs;
 	sem_t * sendsem;
 	sem_t * recvsem;
 };
