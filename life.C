@@ -1,3 +1,8 @@
+/*
+Lukas Hunker
+life.C
+Plays John Conway's game of life useing multiple threads to optimise performance
+*/
 #include <iostream>
 using namespace std;
 #include <cstdio>
@@ -15,6 +20,16 @@ int rowcount, colcount;
 mailboxs * box;
 int totalgen;
 
+/*
+getNeighbors
+Finds the number of live neighbors for a given location
+Params:
+	row - the row coordinate
+	col - the column coordinate
+	eo - whether to check the even generation or odd generation
+Returns:
+	The number of neighbors for the given location
+*/
 int getNeighbors (int row, int col, int eo){
 	int count = 0;
 	for(int i = row-1; i <= row + 1; i++){
@@ -35,6 +50,13 @@ int getNeighbors (int row, int col, int eo){
 	return count;
 }
 
+/*
+worker
+The game of life worker thread
+Processes the rows specified in the initial message
+Params:
+	arg - the thread id
+*/
 void * worker(void* arg){
 	int myid = (int) arg;
 	struct msg myRange;
@@ -104,6 +126,12 @@ void * worker(void* arg){
 
 }
 
+/*
+printgrid
+Prints the grid to stdout
+Params:
+	eo - Whether to rpint the even generation or odd generation
+*/
 void printgrid(int eo){
 	for (int i = 0; i < rowcount; i++){
 		for (int j = 0; j < colcount; j++){
@@ -119,6 +147,7 @@ void printgrid(int eo){
 }
 
 int main (int argc, char** argv){
+	//Take and process input
 	if(argc < 4){
 		cerr << "Usage: ./life threads filename generations (print input)\n";
 		return 1;
@@ -277,7 +306,6 @@ int main (int argc, char** argv){
 		}
 		
 	}
-	cout << lastgen << endl;
 
 	//recieve alldone message
 	int sum = 0;

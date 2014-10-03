@@ -1,3 +1,8 @@
+/*
+Lukas Hunker
+mailboxs.h
+Header file for mailbox class
+*/
 #define RANGE 1
 #define ALLDONE 2
 #define GO 3

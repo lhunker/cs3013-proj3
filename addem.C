@@ -1,3 +1,8 @@
+/*
+Lukas Hunker
+addem.C
+Adds the numbers from 0 to an input number using threads
+*/
 #include <iostream>
 using namespace std;
 #include <cstdio>
@@ -5,6 +10,12 @@ using namespace std;
 
 mailboxs * box;
 
+/*
+worker
+The worker thread that adds a specified range
+Params:
+	arg - the thread id
+*/
 void *worker(void* arg){
 	int myNum = (int) arg;
 	struct msg myRange;
@@ -32,8 +43,8 @@ int main (int argc, char ** argv){
 	int thread = -1, range = -1;
 	sscanf( argv[1], "%d", &thread);
 	sscanf(argv[2], "%d", &range);
-	if( thread < 0 || range < 0){
-		cerr << "Both inputs must be non-negative integers\n";
+	if( thread <= 0 || range <= 0){
+		cerr << "Both inputs must be positive integers\n";
 		return 1;
 	}
 

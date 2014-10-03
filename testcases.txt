@@ -1,0 +1,120 @@
+Addem test cases
+
+lhunker@ld-dev:~/proj3$ ./addem 10 1000
+The result using 10 worker threads is 500500
+lhunker@ld-dev:~/proj3$ ./addem 20 1000
+The result using 20 worker threads is 500500
+lhunker@ld-dev:~/proj3$ ./addem 20 100
+The result using 20 worker threads is 5050
+lhunker@ld-dev:~/proj3$ ./addem 15 10
+The result using 10 worker threads is 55
+lhunker@ld-dev:~/proj3$ ./addem 0 100
+Both inputs must be positive integers
+lhunker@ld-dev:~/proj3$ ./addem 10 0
+Both inputs must be positive integers
+lhunker@ld-dev:~/proj3$ ./addem 2 100
+The result using 2 worker threads is 5050
+lhunker@ld-dev:~/proj3$ ./addem 3 10
+The result using 3 worker threads is 55
+
+Game of Life
+lhunker@ld-dev:~/proj3$ ./life 8 test.txt 5 y
+Generation 0
+0 0 0 0 
+0 1 1 0 
+0 1 1 0 
+0 0 0 0 
+The game ended after 1 generations with
+0 0 0 0 
+0 1 1 0 
+0 1 1 0 
+0 0 0 0 
+
+lhunker@ld-dev:~/proj3$ ./life 8 test.txt 5 y
+Generation 0
+0 0 0 0 
+0 1 1 0 
+0 1 1 1 
+1 0 1 0 
+Generation 1
+0 0 0 0 
+0 1 0 1 
+1 0 0 1 
+0 0 1 1 
+Generation 2
+0 0 0 0 
+0 0 1 0 
+0 1 0 1 
+0 0 1 1 
+The game ended after 3 generations with
+0 0 0 0 
+0 0 1 0 
+0 1 0 1 
+0 0 1 1 
+
+lhunker@ld-dev:~/proj3$ ./life 8 test.txt 5 y
+Generation 0
+0 0 0 0 
+0 1 1 0 
+0 0 1 1 
+1 0 1 0 
+Generation 1
+0 0 0 0 
+0 1 1 1 
+0 0 0 1 
+0 1 1 1 
+Generation 2
+0 0 1 0 
+0 0 1 1 
+0 0 0 0 
+0 0 1 1 
+Generation 3
+0 0 1 1 
+0 0 1 1 
+0 0 0 0 
+0 0 0 0 
+The game ended after 4 generations with
+0 0 1 1 
+0 0 1 1 
+0 0 0 0 
+0 0 0 0 
+
+lhunker@ld-dev:~/proj3$ ./life 4 test.txt 5 y
+Generation 0
+0 0 0 0 0 
+0 0 0 0 0 
+1 1 1 1 1 
+0 0 0 0 0 
+0 0 0 0 0 
+Generation 1
+0 0 0 0 0 
+0 1 1 1 0 
+0 1 1 1 0 
+0 1 1 1 0 
+0 0 0 0 0 
+Generation 2
+0 0 1 0 0 
+0 1 0 1 0 
+1 0 0 0 1 
+0 1 0 1 0 
+0 0 1 0 0 
+Generation 3
+0 0 1 0 0 
+0 1 1 1 0 
+1 1 0 1 1 
+0 1 1 1 0 
+0 0 1 0 0 
+Generation 4
+0 1 1 1 0 
+1 0 0 0 1 
+1 0 0 0 1 
+1 0 0 0 1 
+0 1 1 1 0 
+The game ended after 5 generations with
+0 1 1 1 0 
+1 0 1 0 1 
+1 1 0 1 1 
+1 0 1 0 1 
+0 1 1 1 0 
+
+
