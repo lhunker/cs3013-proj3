@@ -18,7 +18,7 @@ Params:
 */
 void *worker(void* arg){
 	int myNum = *(int *) arg;
-	delete arg;
+	delete (int *)arg;
 	struct msg myRange;
 	box->RecvMsg(myNum, &myRange);
 	int start = myRange.value1;

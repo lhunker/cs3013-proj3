@@ -59,7 +59,7 @@ Params:
 */
 void * worker(void* arg){
 	int myid = *(int *) arg;
-	delete arg;
+	delete (int *)arg;
 	struct msg myRange;
 	box->RecvMsg(myid, &myRange);
 	int start = myRange.value1;
