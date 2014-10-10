@@ -58,7 +58,8 @@ Params:
 	arg - the thread id
 */
 void * worker(void* arg){
-	int myid = (int) arg;
+	int myid = *(int *) arg;
+	delete arg;
 	struct msg myRange;
 	box->RecvMsg(myid, &myRange);
 	int start = myRange.value1;
@@ -243,7 +244,9 @@ int main (int argc, char** argv){
 			rem--;
 		}
 		
-		if(pthread_create(&workers[i], NULL, worker, (void *)(i + 1)) != 0){
+		int* num = new int;
+		*num = i +1;
+		if(pthread_create(&workers[i], NULL, worker, (void *)num) != 0){
 			cerr << "error creating thread\n";
 			return 1;
 		}
